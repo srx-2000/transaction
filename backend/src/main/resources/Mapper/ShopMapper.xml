@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Mapper.ShopMapper">
+    <!--    shop_id  shop_uuid  shop_name  business_id   level  praise_rate  praise_count  deal_count  create_time  status-->
+    <resultMap id="shop" type="com.srx.transaction.Entities.Shop">
+        <id property="shopId" column="shop_id"/>
+        <result property="shopUUID" column="shop_uuid"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="businessId" column="business_id"/>
+        <result property="level" column="level"/>
+        <result property="praiseRate" column="praise_rate"/>
+        <result property="praiseCount" column="praise_count"/>
+        <result property="dealCount" column="deal_count"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <sql id="baseSelect">
+        select * from shop
+    </sql>
+
+    <insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId"
+            parameterType="com.srx.transaction.Entities.Shop">
+        insert into shop(shop_uuid,shop_name,business_id) values(#{shopUUID},#{shopName},#{businessId})
+    </insert>
+
+    <update id="updateShopName">
+        update shop set shop_name = #{shopName} where shop_uuid=#{shopUUID} ;
+    </update>
+
+    <update id="updateShopStatus">
+        update shop set status=#{status} where shop_uuid=#{shopUUID};
+    </update>
+
+    <select id="queryShopByUserId" resultMap="shop">
+        <include refid="baseSelect"/>
+        where business_id=#{businessId};
+    </select>
+
+    <select id="queryShopListByCondition" resultMap="shop">
+        <include refid="baseSelect"/>
+        <where>
+            <if test="shop.shopId!=null">
+                and shop_id=#{shop.shopId}
+            </if>
+            <if test="shop.shopUUID!=null">
+                and shop_uuid=#{shop.shopUUID}
+            </if>
+            <if test="shop.businessId!=null">
+                and business_id=#{shop.businessId}
+            </if>
+            <if test="shop.createTime!=null">
+                and create_time &lt;=#{shop.createTime}
+            </if>
+            <if test="shop.status!=null">
+                and status=#{shop.status}
+            </if>
+            <if test="shop.shopName!=null">
+                and shop_name like '%${shop.shopName}%'
+            </if>
+            <if test="shop.level!=null">
+                and level=#{shop.level}
+            </if>
+            <if test="shop.praiseRate!=null">
+                and praise_rate=#{shop.praiseRate}
+            </if>
+            <if test="shop.praiseCount!=null">
+                and praise_count=#{shop.praiseCount}
+            </if>
+            <if test="shop.dealCount!=null">
+                and deal_count=#{shop.dealCount}
+            </if>
+            <if test="shop.status">
+                and status=#{shop.status}
+            </if>
+        </where>
+        order by create_time asc
+        limit #{begin},#{pageSize}
+    </select>
+
+    <update id="updateShopPraiseRate">
+        update shop set praise_rate=#{praiseRate} where shop_uuid=#{shopUUID}
+    </update>
+
+    <update id="updateShopPraiseCount">
+        update shop set praise_count=#{praiseCount} where shop_uuid=#{shopUUID};
+    </update>
+
+    <update id="updateShopDealCount">
+        update shop set deal_count=#{dealCount} where shop_uuid=#{shopUUID};
+    </update>
+
+    <update id="updateShopLevel">
+        update shop set level=#{level} where shop_uuid=#{shopUUID};
+    </update>
+
+    <select id="queryShopByUUID" resultMap="shop">
+        <include refid="baseSelect"/>
+        where shop_uuid=#{shopUUID}
+    </select>
+
+    <select id="queryShopList" resultMap="shop">
+        <include refid="baseSelect"/>
+        order by create_time asc
+        limit #{begin},#{pageSize}
+    </select>
+
+
+</mapper>

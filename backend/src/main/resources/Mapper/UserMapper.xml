@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Mapper.UserMapper">
+    <resultMap id="user" type="com.srx.transaction.Entities.User">
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <resultMap id="commonUser" type="com.srx.transaction.Entities.CommonUser" extends="user">
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="city" property="city"/>
+        <result column="account" property="account"/>
+    </resultMap>
+    <resultMap id="businessUser" type="com.srx.transaction.Entities.BusinessUser" extends="user">
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="identification_front" property="identificationFront"/>
+        <result column="identification_back" property="identificationBack"/>
+        <result column="account" property="account"/>
+        <result column="license" property="license"/>
+    </resultMap>
+
+    <select id="login" resultMap="user">
+        select * from user
+        where status="0" and username=#{username} or email=#{username} and password=#{password}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId"
+            parameterType="com.srx.transaction.Entities.User">
+        insert into user(username,password,email,role) values (#{username},#{password},#{email},#{role})
+    </insert>
+    <insert id="insertCommonUser" parameterType="com.srx.transaction.Entities.CommonUser">
+        insert into common_user(user_id,name,phone,sex,city,account) values (#{commonUserId},#{name},#{phone},#{sex},#{city},#{account})
+    </insert>
+
+    <insert id="insertBusinessUser" parameterType="com.srx.transaction.Entities.BusinessUser">
+        insert into business_user(user_id,name,phone,sex,identification_front,identification_back,account,license) values (#{businessUserId},#{name},#{phone},#{sex},#{identificationFront},#{identificationBack},#{account},#{license})
+    </insert>
+
+    <select id="queryUsername" resultType="String">
+        select user_id from user where username=#{username};
+    </select>
+
+    <select id="queryEmail" resultType="String">
+        select user_id from user where email=#{email};
+    </select>
+
+    <select id="queryUserRole" resultType="String">
+        select role from USER where username=#{username};
+    </select>
+
+    <select id="queryCommonUserById" resultMap="commonUser">
+        select * from common_user join user on common_user.user_id=user.user_id where common_user.user_id=#{commonUserId};
+    </select>
+
+    <select id="queryUserIdByUsername" resultType="String">
+        select user_id from USER where username=#{username};
+    </select>
+
+    <select id="queryBusinessUserById" resultMap="businessUser">
+        select * from business_user join user on business_user.user_id=user.user_id where business_user.user_id=#{businessUserId};
+    </select>
+
+    <select id="queryCommonUserList" resultMap="commonUser">
+        select * from common_user join user on common_user.user_id=user.user_id
+        <if test="status!=null">
+            where status=#{status}
+        </if>
+        limit #{begin},#{pageSize}
+    </select>
+
+    <select id="queryBusinessUserList" resultMap="businessUser">
+        select * from business_user join user on business_user.user_id=user.user_id
+        <if test="status!=null">
+            where status=#{status}
+        </if>
+        limit #{begin},#{pageSize}
+    </select>
+
+    <update id="updatePassword">
+        update user set password=#{password} where status=0 and email=#{email};
+    </update>
+
+    <update id="updateUserStatus">
+        update user set status =#{status} where username=#{username};
+    </update>
+</mapper>

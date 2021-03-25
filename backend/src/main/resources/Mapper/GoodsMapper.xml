@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Entities.Goods">
+    <insert id="insertGoods" useGeneratedKeys="true" keyColumn="goods_id"
+            keyProperty="goodsId" parameterType="com.srx.transaction.Entities.Goods">
+        insert into goods(goods_uuid,shop_uuid,goods_name,goods_price,
+        <if test="goodsDescription!=null">
+            goods_description,
+        </if>
+        size,
+        <if test="isBargain!=null">
+            is_bargain,
+        </if>
+        <if test="status!=null">
+            status,
+        </if>
+        goods_price,
+        <if test="damageLevel!=null">
+            damage_level,
+        </if>
+        goods_count
+        )
+        values (#{goodsUUID},#{shopUUID},#{goodsName},#{goodsPrice},
+        <if test="goodsDescription!=null">
+            #{goodsDescription},
+        </if>
+        #{size},
+        <if test="isBargain!=null">
+            #{isBargain},
+        </if>
+        <if test="status!=null">
+            #{status},
+        </if>
+        #{goodsPrice},
+        <if test="damageLevel!=null">
+            #{damageLevel},
+        </if>
+        #{goodsCount}
+        )
+    </insert>
+    <update id="updateGoods" parameterType="com.srx.transaction.Entities.Goods">
+        update goods
+        <set>
+            <if test="goodsName!=null and goodName!=''">goods_name=#{goodsName},</if>
+            <if test="goodsDescription!=null and goodsDescription!=''">goods_description=#{goodsDescription},</if>
+            <if test="size!=null and size!=''">size=#{size},</if>
+            <if test="isBargain!=null and isBargain!=''">is_bargain=#{isBargain},</if>
+            <if test="status!=null and status!=''">status=#{status},</if>
+            <if test="goodsPrice!=null and goodsPrice!=''">goods_price=#{goodsPrice},</if>
+            <if test="goodsCount!=null and goodsCount!=''">goods_count=#{goodsCount},</if>
+            <if test="goodsPraiseCount!=null and goodsPraiseCount!=''">goods_praise_count=#{goodsPraiseCount},</if>
+            <if test="goodsPraiseRate!=null and goodsPraiseRate!=''">goods_praise_rate=#{goodsPraiseRate},</if>
+            <if test="goodsDealCount!=null and goodsDealCount!=''">goods_deal_count=#{goodsDealCount},</if>
+            <if test="damageLevel!=null and damageLevel!=''">damage_level=#{damageLevel},</if>
+        </set>
+        where shop_uuid=#{shopUUID};
+    </update>
+</mapper>
