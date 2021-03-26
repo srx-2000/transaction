@@ -207,7 +207,32 @@ public class UserController {
             return new ResultMessage(UPDATE_PASSWORD_SUCCESS);
         }
         return new ResultMessage(UPDATE_PASSWORD_FAIL);
-
     }
 
+    @GetMapping("/updateAddress")
+    public ResultMessage updateCity(@RequestParam String username, @RequestParam String address) {
+        Boolean aBoolean = userService.updateUserCity(username, address);
+        if (aBoolean) {
+            return new ResultMessage(UPDATE_USER_ADDRESS_SUCCESS);
+        } else
+            return new ResultMessage(UPDATE_USER_ADDRESS_FAIL);
+    }
+
+    @GetMapping("/isUsernameExist")
+    public ResultMessage isUsernameExist(@RequestParam String username) {
+        Boolean usernameExist = userService.isUsernameExist(username);
+        if (usernameExist)
+            return new ResultMessage(USERNAME_EXIT);
+        else
+            return new ResultMessage(USERNAME_NOT_EXIT);
+    }
+
+    @GetMapping("/isEmailExist")
+    public ResultMessage isEmailExist(@RequestParam String email) {
+        Boolean emailExist = userService.isEmailExist(email);
+        if (emailExist)
+            return new ResultMessage(EMAIL_EXIT);
+        else
+            return new ResultMessage(EMAIL_NOT_EXIT);
+    }
 }

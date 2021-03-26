@@ -121,14 +121,14 @@ public class UserServiceImplement implements UserService, BaseService {
     }
 
     @Override
-    public List<CommonUser> getCommonUserList(Integer currentPage, Integer pageSize, String status) {
+    public List<CommonUser> getCommonUserList(String status,Integer currentPage, Integer pageSize) {
         Integer begin = (currentPage - 1) * pageSize;
         List<CommonUser> commonUsers = userMapper.queryCommonUserList(begin, pageSize, status);
         return commonUsers;
     }
 
     @Override
-    public List<BusinessUser> getBusinessUserList(Integer currentPage, Integer pageSize, String status) {
+    public List<BusinessUser> getBusinessUserList(String status,Integer currentPage, Integer pageSize) {
         Integer begin = (currentPage - 1) * pageSize;
         List<BusinessUser> businessUsers = userMapper.queryBusinessUserList(begin, pageSize, status);
         return businessUsers;
@@ -170,6 +170,12 @@ public class UserServiceImplement implements UserService, BaseService {
             return aBoolean;
         }
         return flag;
+    }
+
+    @Override
+    public Boolean updateUserCity(String username, String city) {
+        Boolean aBoolean = userMapper.updateUserCity(username, city);
+        return aBoolean;
     }
 
 }

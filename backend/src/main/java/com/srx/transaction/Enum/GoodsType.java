@@ -15,4 +15,12 @@ public enum GoodsType {
         this.type = type;
         this.typeCode = typeCode;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public Integer getTypeCode() {
+        return typeCode;
+    }
 }

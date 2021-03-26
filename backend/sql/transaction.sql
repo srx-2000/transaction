@@ -57,19 +57,19 @@ CREATE TABLE goods(
 	goods_uuid VARCHAR(36) NOT NULL UNIQUE COMMENT "商品唯一标识符，由服务端自动生成",
 	shop_uuid VARCHAR(36) NOT NULL COMMENT "店铺uuid",
 	goods_name VARCHAR(255) NOT NULL COMMENT "商品名",
-	goods_price DOUBLE(5,2) NOT NULL COMMENT "商品价格",
+	goods_price DOUBLE(10,2) NOT NULL COMMENT "商品价格",
 	goods_description BLOB COMMENT "商品描述",
-	goods_count INT NOT NULL DEFAULT 0 COMMENT "商品数量",
+	goods_count INT NOT NULL DEFAULT 1 COMMENT "商品数量",
 	goods_praise_count INT NOT NULL DEFAULT 0 COMMENT "如果用户打分超过3分（满分5分）那么好评数量+1",
 	goods_praise_rate DOUBLE(5,2) NOT NULL DEFAULT 0 COMMENT "商品好评率，计算方式为（goods_praise_count/goods_deal_count）*100",
 	goods_deal_count INT NOT NULL DEFAULT 0 COMMENT "商品交易量",
 	goods_type VARCHAR(255) NOT NULL COMMENT "商品类别，给出几个具体的商品种类",
-	goods_discount_price DOUBLE(5,2) NOT NULL COMMENT "商品打折价,默认与goods_price相等，提供update方法更改",
+	goods_discount_price DOUBLE(10,2) NOT NULL COMMENT "商品打折价,默认与goods_price相等，提供update方法更改",
 	size VARCHAR(255) NOT NULL COMMENT "物品大小，有用户输入单位",
 	is_bargain TINYINT NOT NULL DEFAULT 0 COMMENT "是否可以讨价还价，默认不可以",
-	damage_level INT NULL DEFAULT 10 COMMENT "损坏程度，10为全新，0为完全损坏",
-	`status` TINYINT NOT NULL DEFAULT 1 COMMENT "0已下架（手动操作），1在售卖（默认），-1已售罄（goods_count==0时）",
-	FOREIGN KEY(shop_uuid) REFERENCES shop(shop_uuid)
+	damage_level INT NOT NULL DEFAULT 10 COMMENT "损坏程度，10为全新，0为完全损坏",
+	discount INT NOT NULL DEFAULT 100 COMMENT "折扣，默认100，即不打折",
+	`status` TINYINT NOT NULL DEFAULT 1 COMMENT "0已下架（手动操作），1在售卖（默认），-1已售罄（goods_count==0时）"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 
@@ -80,10 +80,7 @@ CREATE TABLE deal(
 	deal_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "交易时间，从用户点击收货开始",
 	deal_count INT NOT NULL DEFAULT 1 COMMENT "一种物品的交易数量",
 	assess TINYINT NOT NULL DEFAULT 5 COMMENT "对商品的评价，默认为5星好评",
-	`status` TINYINT NOT NULL DEFAULT 0 COMMENT "0表示订单正在交易（已完成，24小时内没有用退货及变为-1），1订单已退货（买家确认退货成功后订单变为-1），-1订单已彻底完成（无法退货或已退货完成）",
-	FOREIGN KEY(goods_uuid) REFERENCES goods(goods_uuid),
-	FOREIGN KEY(shop_uuid) REFERENCES shop(shop_uuid),
-	FOREIGN KEY(common_id) REFERENCES `user`(user_id)
+	`status` TINYINT NOT NULL DEFAULT 0 COMMENT "0表示订单正在交易（已完成，24小时内没有用退货及变为-1），1订单已退货（买家确认退货成功后订单变为-1），-1订单已彻底完成（无法退货或已退货完成）"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='交易处理表';
 
 CREATE TABLE wallet(
@@ -100,16 +97,21 @@ CREATE TABLE `comment`(
 	user_id INT NOT NULL  COMMENT "用户id",
 	comment_content BLOB NOT NULL COMMENT "评论内容",
 	comment_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "评论时间",
-	reply_id INT COMMENT "默认为空，如果该评论为评论的评论那么这个值就是相对应的comment_id",
-	FOREIGN KEY(goods_uuid) REFERENCES goods(goods_uuid),
-	FOREIGN KEY(user_id) REFERENCES `user`(user_id)
+	reply_id INT COMMENT "默认为空，如果该评论为评论的评论那么这个值就是相对应的comment_id"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='商品评论表';
+
+
+CREATE TABLE shop_car(
+	goods_uuid VARCHAR(36) NOT NULL COMMENT "商品标识",
+	common_id INT NOT NULL COMMENT "购买者id",
+	goods_count INT NOT NULL COMMENT "商品数量",
+	STATUS TINYINT NOT NULL DEFAULT 0 COMMENT "商品状态，默认为0，即在购物车中，1为已购买，-1为已从购物车中删除"
+)ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT="购物车表";
 
 CREATE TABLE goods_picture(
 	goods_uuid VARCHAR(36) NOT NULL COMMENT "商品标识",
 	picture_path VARCHAR(255) NOT NULL COMMENT "商品图片存储路径",
-	join_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "图片加入时间",
-	FOREIGN KEY(goods_uuid) REFERENCES goods(goods_uuid)
+	join_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "图片加入时间"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
 

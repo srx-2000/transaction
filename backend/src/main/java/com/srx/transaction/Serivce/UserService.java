@@ -81,13 +81,13 @@ public interface UserService extends BaseService{
      * 通过给出的起始以及限制个数获取普通用户列表
      * @return
      */
-    List<CommonUser> getCommonUserList(Integer currentPage, Integer pageSize,String status);
+    List<CommonUser> getCommonUserList(String status,Integer currentPage, Integer pageSize);
 
     /**
      * 通过给出的起始以及限制个数获取普通用户列表
      * @return
      */
-    List<BusinessUser> getBusinessUserList(Integer currentPage, Integer pageSize,String status);
+    List<BusinessUser> getBusinessUserList(String status,Integer currentPage, Integer pageSize);
 
     /**
      * 修改密码
@@ -105,6 +105,14 @@ public interface UserService extends BaseService{
      * @return
      */
     Boolean updateUserStatus(String username,String status);
+
+    /**
+     * 更新用户地址
+     * @param username
+     * @param city
+     * @return
+     */
+    Boolean updateUserCity(String username, String city);
 
 //    /**
 //     * 将用户状态更新为异常

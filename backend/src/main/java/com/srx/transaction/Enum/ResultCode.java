@@ -1,6 +1,7 @@
 package com.srx.transaction.Enum;
 
 public enum ResultCode {
+    //成功码
     LOGIN_SUCCESS("登录成功", 204),
     FILE_UPLOAD_SUCCESS("文件上传成功", 205),
     DATA_RETURN_SUCCESS("数据返回成功", 206),
@@ -10,10 +11,11 @@ public enum ResultCode {
     UPDATE_USER_STATUS_SUCCESS("用户状态更新成功",210),
     UPDATE_SHOP_LEVEL_SUCCESS("更新店铺等级成功",211),
     UPDATE_SHOP_STATUS_SUCCESS("更新店铺状态成功",212),
-    UPDATE_SHOP_NAME_SUCCESS("更改店铺名称成功",212),
+    UPDATE_SHOP_NAME_SUCCESS("更改店铺名称成功",213),
+    UPDATE_USER_ADDRESS_SUCCESS("更改用户地址成功",214),
+    UPDATE_GOODS_INFO_SUCCESS("更改商品信息成功",216),
+    GOODS_INSERT_SUCCESS("商品信息上传成功",215),
 
-
-    ENV_EXIT("环境已存在", 434),
 
     USERNAME_EXIT("该用户名已被占用", 437),
     USERNAME_NOT_EXIT("该用户名可以使用", 214),
@@ -31,13 +33,20 @@ public enum ResultCode {
     ERROR_NO_MORE_DATA("已经没有数据了", 428),
     ERROR_NO_DATA("没有查询到数据", 429),
     ERROR_INDEX("索引错误，请输入正确的索引",478),
+    ERROR_NETWORK("网络错误...请稍后重试",479),
+    ERROR_NOFOUND_GOODS("商品未找到",480),
+    ERROR_NUM_GOODS("商品数量出错",481),
     UPDATE_PASSWORD_FAIL("更改密码失败", 435),
     REGISTER_FAIL("注册失败", 436),
     UPDATE_USER_STATUS_FAIL("用户状态更新失败",456),
     UPDATE_SHOP_LEVEL_FAIL("更新店铺等级失败",455),
     UPDATE_SHOP_STATUS_FAIL("更新店铺状态失败",457),
     UPDATE_SHOP_NAME_FAIL("更改店铺名称失败",458),
-            ;
+    UPDATE_USER_ADDRESS_FAIL("更改用户地址失败",459),
+    UPDATE_GOODS_INFO_FAIL("更改商品信息失败",461),
+    GOODS_INSERT_FAIL("商品信息上传失败，请重试",460),
+
+    ;
 
     private final String message;
     private final Integer code;

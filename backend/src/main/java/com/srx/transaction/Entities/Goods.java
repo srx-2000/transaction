@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class Goods {
     private String goodsName;
     private String goodsDescription;
     private String size;
-    private String goodsType;
+    private Integer goodsType;
     private String isBargain;
     private String status;
     private Double goodsPrice;
@@ -26,5 +28,8 @@ public class Goods {
     private Double goodsPraiseRate;
     private Integer goodsDealCount;
     private Integer damageLevel;
+    private Integer discount;
+    private Double goodsDiscountPrice;
+    private List<GoodsPicture> pictureList;
 
 }

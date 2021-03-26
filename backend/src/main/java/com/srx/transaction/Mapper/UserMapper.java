@@ -121,5 +121,12 @@ public interface UserMapper {
      */
     Boolean updateUserStatus(@Param("username") String username, @Param("status") String status);
 
+    /**
+     * 允许用户修改城市信息，即收货地址
+     * @param city
+     * @param username
+     * @return
+     */
+    Boolean updateUserCity(@Param("username")String username,@Param("city") String city);
 
 }

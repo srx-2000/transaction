@@ -96,6 +96,7 @@ public interface ShopMapper {
 
     /**
      * 通过传入的shop对象，检查shop对象中的属性，将不为空的加入到搜索条件中
+     *
      * @param shop
      * @param begin
      * @param pageSize

@@ -93,4 +93,8 @@
     <update id="updateUserStatus">
         update user set status =#{status} where username=#{username};
     </update>
+
+    <update id="updateUserCity">
+        update user set city =#{city} where username=#{username};
+    </update>
 </mapper>

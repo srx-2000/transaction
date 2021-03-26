@@ -75,7 +75,7 @@
                 and status=#{shop.status}
             </if>
         </where>
-        order by create_time asc
+        order by create_time desc
         limit #{begin},#{pageSize}
     </select>
 
@@ -102,9 +102,10 @@
 
     <select id="queryShopList" resultMap="shop">
         <include refid="baseSelect"/>
-        order by create_time asc
+        order by create_time desc
         limit #{begin},#{pageSize}
     </select>
+
 
 
 </mapper>
