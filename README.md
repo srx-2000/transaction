@@ -38,6 +38,7 @@
 **数据库设计**
 
 ​	[二手交易平台](https://docs.qq.com/sheet/DTXROeXZyU0R6b0Zq)
+
 **图床**
 
 ​	[腾讯云](https://cloud.tencent.com/solution/cos-data-processing)
@@ -59,3 +60,7 @@
 * 2021.3.26
 
   后端对用户以及商城接口进行了完善，同时完成了部分商品接口
+  
+* 2021.4.1
+
+  这几天的之间将所有后端接口基本完成，可能存在bug，等待前端对接时进行相关修改

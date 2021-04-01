@@ -124,9 +124,9 @@ public interface UserMapper {
     /**
      * 允许用户修改城市信息，即收货地址
      * @param city
-     * @param username
+     * @param userId
      * @return
      */
-    Boolean updateUserCity(@Param("username")String username,@Param("city") String city);
+    Boolean updateUserCity(@Param("userId")String userId,@Param("city") String city);
 
 }

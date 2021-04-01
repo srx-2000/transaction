@@ -5,6 +5,7 @@ import com.srx.transaction.Entities.DTO.ResultMessage;
 import com.srx.transaction.Entities.User;
 import com.srx.transaction.Util.PictureUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -46,7 +47,15 @@ class SrxApplicationTests {
     public void test2(){
         String goodsUUID="ce79d103-f2ce-4b8d-9478-edc7eab399be";
         String shopUUID="f653b418-8970-47df-9462-e43d1dfb1a78";
-        String url1 = PictureUtil.getUrl(shopUUID, goodsUUID, null);
-        System.out.println(url1);
+//        String url1 = PictureUtil.getUrl(shopUUID, goodsUUID, null);
+//        System.out.println(url1);
+    }
+
+    @Test
+    public void test3(){
+        Integer a=50;
+        Integer b=60;
+        Double c= Double.valueOf(a*100/b);
+        System.out.println(c);
     }
 }

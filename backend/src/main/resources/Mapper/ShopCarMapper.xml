@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Mapper.ShopCarMapper">
+    <resultMap id="shopCar" type="com.srx.transaction.Entities.ShopCar">
+        <result column="goods_uuid" property="goodsUUID"/>
+        <result column="common_id" property="commonId"/>
+        <result column="goods_count" property="goodsCount"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <insert id="insertGoodsToCar" parameterType="com.srx.transaction.Entities.ShopCar">
+        insert into shop_car(goods_uuid,common_id,goods_count) values(#{goodsUUID},#{commonId},#{goodsCount})
+    </insert>
+
+    <update id="updateCount">
+        update shop_car set goods_count=#{goodsCount} where goods_uuid=#{goodsUUID} and common_id=#{commonId};
+    </update>
+
+    <update id="updateStatus">
+        update shop_car set status=#{status} where goods_uuid=#{goodsUUID} and common_id=#{commonId};
+    </update>
+
+    <select id="queryGoodsByCommonIdAndUUID" resultMap="shopCar">
+        select * from shop_car where goods_uuid=#{goodsUUID} and common_id=#{commonId};
+    </select>
+
+    <select id="queryGoodsListByCommonId" resultMap="shopCar">
+        select * from shop_car where common_id=#{commonId}
+        <if test="status!=null and status!=''">
+            and status=#{status}
+        </if>;
+    </select>
+
+
+</mapper>

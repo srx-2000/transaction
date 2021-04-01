@@ -2,6 +2,7 @@ package com.srx.transaction.Serivce;
 
 import com.srx.transaction.Entities.Goods;
 import com.srx.transaction.Entities.GoodsPicture;
+import com.srx.transaction.Entities.MiddleWallet;
 import com.srx.transaction.Entities.Shop;
 
 import java.util.List;
@@ -58,28 +59,27 @@ public interface GoodsService extends BaseService {
      * 更新商品好评数量
      *
      * @param goodsUUID
-     * @param count
+     * @param addCount
      * @return
      */
-    Boolean updateGoodsPraiseCount(String goodsUUID, Integer count);
+    Boolean updateGoodsPraiseCount(String goodsUUID, Integer addCount);
 
     /**
-     * 更新商品好评率
+     * 更新商品好评率,每次调用该方法，系统会从数据库中读取现在的数据进行计算，无需传入修改值
      *
      * @param goodsUUID
-     * @param rate
      * @return
      */
-    Boolean updateGoodsPraiseRate(String goodsUUID, Double rate);
+    Boolean updateGoodsPraiseRate(String goodsUUID);
 
     /**
-     * 更新商品交易数量
+     * 更新商品交易数量,该方法与updateGoodsPraiseCount都不支持对数量进行减法运算
      *
      * @param goodsUUID
-     * @param count
+     * @param addCount
      * @return
      */
-    Boolean updateGoodsDealCount(String goodsUUID, Integer count);
+    Boolean updateGoodsDealCount(String goodsUUID, Integer addCount);
 
     /**
      * 更新商品信息，此方法主要是给商家用户使用，用来修改商品信息使用，
@@ -89,6 +89,13 @@ public interface GoodsService extends BaseService {
      * @return
      */
     Boolean updateGoodsInfo(Goods goods,List<GoodsPicture> pictureList);
+
+    /**
+     * 插入一个订单记录
+     * @param middleWallet
+     * @return
+     */
+    Boolean insertMiddleWallet(MiddleWallet middleWallet);
 
 //    /**
 //     * 更新商品价格

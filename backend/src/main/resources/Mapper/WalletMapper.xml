@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Mapper.WalletMapper">
+    <resultMap id="wallet" type="com.srx.transaction.Entities.Wallet">
+        <id column="user_id" property="userId"/>
+        <result column="integral" property="integral"/>
+        <result column="sum_money" property="sumMoney"/>
+        <result column="current_money" property="currentMoney"/>
+    </resultMap>
+    <resultMap id="middleWallet" type="com.srx.transaction.Entities.MiddleWallet">
+        <result property="dealUUID" column="deal_uuid"/>
+        <result property="sumMoney" column="sum_money"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <insert id="insertWallet" parameterType="com.srx.transaction.Entities.Wallet">
+        insert into wallet (user_id) values (#{userId});
+    </insert>
+
+    <update id="updateIntegral">
+        update wallet set integral = #{integral} where user_id=#{userId};
+    </update>
+
+    <update id="updateCurrentMoney">
+        update wallet set current_money= #{currentMoney} where user_id=#{userId};
+    </update>
+
+
+    <update id="updateSumMoney">
+        update wallet set sum_money = #{sumMoney} where user_id=#{userId};
+    </update>
+
+    <select id="queryWallet" resultMap="wallet">
+        select * from wallet where user_id=#{userId};
+    </select>
+
+    <select id="queryMiddleWalletByUUID" resultMap="middleWallet">
+        select * from middle_wallet where deal_uuid=#{dealUUID} and status=#{status};
+    </select>
+
+    <insert id="insertMiddleWallet" parameterType="com.srx.transaction.Entities.MiddleWallet">
+        insert into middle_wallet (deal_uuid,sum_money) values (#{dealUUID},#{sumMoney});
+    </insert>
+
+    <update id="updateMiddleWalletStatus">
+        update middle_wallet set sum_money=#{sumMoney} where deal_uuid=#{dealUUID};
+    </update>
+
+</mapper>

@@ -1,11 +1,9 @@
 package com.srx.transaction.Serivce.Impl;
 
-import com.srx.transaction.Entities.BusinessUser;
-import com.srx.transaction.Entities.CommonUser;
-import com.srx.transaction.Entities.Shop;
-import com.srx.transaction.Entities.User;
+import com.srx.transaction.Entities.*;
 import com.srx.transaction.Mapper.ShopMapper;
 import com.srx.transaction.Mapper.UserMapper;
+import com.srx.transaction.Mapper.WalletMapper;
 import com.srx.transaction.Serivce.BaseService;
 import com.srx.transaction.Serivce.UserService;
 import com.srx.transaction.Util.CodeUtil;
@@ -17,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserServiceImplement implements UserService, BaseService {
+public class UserServiceImplement implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private ShopMapper shopMapper;
+    @Autowired
+    private WalletMapper walletMapper;
 
     @Override
     public User login(String username, String password) {
@@ -46,8 +46,9 @@ public class UserServiceImplement implements UserService, BaseService {
             user.setPassword(CodeUtil.get_MD5_code(user.getPassword()));
             Boolean flag = userMapper.insertUser(user);
             commonUser.setCommonUserId(user.getUserId());
+            Boolean aBoolean = walletMapper.insertWallet(user.getUserId());
             Boolean flag1 = userMapper.insertCommonUser(commonUser);
-            return flag && flag1;
+            return flag && flag1 && aBoolean;
         } else return false;
     }
 
@@ -67,7 +68,8 @@ public class UserServiceImplement implements UserService, BaseService {
             shop.setShopUUID(shopUUID);
             shop.setBusinessId(businessUser.getBusinessUserId());
             Boolean flag2 = shopMapper.insertShop(shop);
-            return flag && flag1 && flag2;
+            Boolean aBoolean = walletMapper.insertWallet(user.getUserId());
+            return flag && flag1 && flag2 && aBoolean;
         } else return false;
 
     }
@@ -75,7 +77,7 @@ public class UserServiceImplement implements UserService, BaseService {
     @Override
     public Boolean isUsernameExist(String username) {
         String s = userMapper.queryUsername(username);
-        if (!s.equals("0"))
+        if (s != null)
             return true;
         else
             return false;
@@ -84,7 +86,7 @@ public class UserServiceImplement implements UserService, BaseService {
     @Override
     public Boolean isEmailExist(String email) {
         String s = userMapper.queryEmail(email);
-        if (!email.equals("0")) {
+        if (s != null) {
             return true;
         }
         return false;
@@ -121,14 +123,14 @@ public class UserServiceImplement implements UserService, BaseService {
     }
 
     @Override
-    public List<CommonUser> getCommonUserList(String status,Integer currentPage, Integer pageSize) {
+    public List<CommonUser> getCommonUserList(String status, Integer currentPage, Integer pageSize) {
         Integer begin = (currentPage - 1) * pageSize;
         List<CommonUser> commonUsers = userMapper.queryCommonUserList(begin, pageSize, status);
         return commonUsers;
     }
 
     @Override
-    public List<BusinessUser> getBusinessUserList(String status,Integer currentPage, Integer pageSize) {
+    public List<BusinessUser> getBusinessUserList(String status, Integer currentPage, Integer pageSize) {
         Integer begin = (currentPage - 1) * pageSize;
         List<BusinessUser> businessUsers = userMapper.queryBusinessUserList(begin, pageSize, status);
         return businessUsers;
@@ -174,8 +176,15 @@ public class UserServiceImplement implements UserService, BaseService {
 
     @Override
     public Boolean updateUserCity(String username, String city) {
-        Boolean aBoolean = userMapper.updateUserCity(username, city);
+        String id = userMapper.queryUserIdByUsername(username);
+        Boolean aBoolean = userMapper.updateUserCity(id, city);
         return aBoolean;
+    }
+
+    @Override
+    public String getUserIdByUsername(String username) {
+        String id = userMapper.queryUserIdByUsername(username);
+        return id;
     }
 
 }

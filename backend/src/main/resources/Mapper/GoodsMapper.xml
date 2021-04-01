@@ -2,28 +2,57 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.srx.transaction.Entities.Goods">
+<mapper namespace="com.srx.transaction.Mapper.GoodsMapper">
+    <resultMap id="goods" type="com.srx.transaction.Entities.Goods">
+        <id column="goods_id" property="goodsId"/>
+        <result column="goods_uuid" property="goodsUUID"/>
+        <result column="shop_uuid" property="shopUUID"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_description" property="goodsDescription"/>
+        <result column="size" property="size"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="is_bargain" property="isBargain"/>
+        <result column="status" property="status"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="goods_count" property="goodsCount"/>
+        <result column="goods_praise_count" property="goodsPraiseCount"/>
+        <result column="goods_praise_rate" property="goodsPraiseRate"/>
+        <result column="goods_deal_count" property="goodsDealCount"/>
+        <result column="damage_level" property="damageLevel"/>
+        <result column="discount" property="discount"/>
+        <result column="goods_discount_price" property="goodsDiscountPrice"/>
+        <!--        <association property="pictureList" javaType="com.srx.transaction.Entities.GoodsPicture">-->
+        <!--            <id column="goods_uuid" property="goodsUUID"/>-->
+        <!--            <result column="picture_path" property="picturePath"/>-->
+        <!--            <result column="join_time" property="joinTime"/>-->
+        <!--        </association>-->
+    </resultMap>
+
+    <resultMap id="goodsPicture" type="com.srx.transaction.Entities.GoodsPicture">
+        <id column="goods_uuid" property="goodsUUID"/>
+        <result column="picture_path" property="picturePath"/>
+        <result column="join_time" property="joinTime"/>
+    </resultMap>
     <insert id="insertGoods" useGeneratedKeys="true" keyColumn="goods_id"
             keyProperty="goodsId" parameterType="com.srx.transaction.Entities.Goods">
-        insert into goods(goods_uuid,shop_uuid,goods_name,goods_price,
-        <if test="goodsDescription!=null">
+        insert into goods(goods_uuid,shop_uuid,goods_name,goods_price,goods_type,
+        <if test="goodsDescription!=null and goodsDescription!=''">
             goods_description,
         </if>
         size,
-        <if test="isBargain!=null">
+        <if test="isBargain!=null and isBargain!=''">
             is_bargain,
         </if>
-        <if test="status!=null">
+        <if test="status!=null and status!=''">
             status,
         </if>
-        goods_price,
-        <if test="damageLevel!=null">
+        <if test="damageLevel!=null and damageLevel!=''">
             damage_level,
         </if>
         goods_count,
         goods_discount_price
         )
-        values (#{goodsUUID},#{shopUUID},#{goodsName},#{goodsPrice},
+        values (#{goodsUUID},#{shopUUID},#{goodsName},#{goodsPrice},#{goodsType},
         <if test="goodsDescription!=null">
             #{goodsDescription},
         </if>
@@ -34,68 +63,66 @@
         <if test="status!=null">
             #{status},
         </if>
-        #{goodsPrice},
         <if test="damageLevel!=null">
             #{damageLevel},
         </if>
         #{goodsCount},
-        <if test="goodsDiscountPrice!=null">
-            #{goodsPrice}
-        </if>
+        #{goodsDiscountPrice}
         )
     </insert>
     <update id="updateGoods" parameterType="com.srx.transaction.Entities.Goods">
         update goods
         <set>
-            <if test="goodsName!=null and goodName!=''">goods_name=#{goodsName},</if>
+            <if test="goodsName!=null and goodsName!=''">goods_name=#{goodsName},</if>
             <if test="goodsDescription!=null and goodsDescription!=''">goods_description=#{goodsDescription},</if>
             <if test="size!=null and size!=''">size=#{size},</if>
             <if test="isBargain!=null and isBargain!=''">is_bargain=#{isBargain},</if>
             <if test="status!=null and status!=''">status=#{status},</if>
-            <if test="goodsPrice!=null and goodsPrice!=''">goods_price=#{goodsPrice},</if>
-            <if test="goodsCount!=null and goodsCount!=''">goods_count=#{goodsCount},</if>
-            <if test="goodsPraiseCount!=null and goodsPraiseCount!=''">goods_praise_count=#{goodsPraiseCount},</if>
-            <if test="goodsPraiseRate!=null and goodsPraiseRate!=''">goods_praise_rate=#{goodsPraiseRate},</if>
-            <if test="goodsDealCount!=null and goodsDealCount!=''">goods_deal_count=#{goodsDealCount},</if>
-            <if test="damageLevel!=null and damageLevel!=''">damage_level=#{damageLevel},</if>
-            <if test="goodsDiscountPrice!=null and goodsDiscountPrice!=''">goods_discount_price=#{goodsDiscountPrice},
+            <if test="goodsPrice!=null and goodsPrice!='' or goodsPrice==0">goods_price=#{goodsPrice},</if>
+            <if test="goodsCount!=null">goods_count=#{goodsCount},</if>
+            <if test="goodsPraiseCount!=null">goods_praise_count=#{goodsPraiseCount},</if>
+            <if test="goodsPraiseRate!=null and goodsPraiseRate!='' or goodsPraiseRate==0">goods_praise_rate=#{goodsPraiseRate},</if>
+            <if test="goodsDealCount!=null">goods_deal_count=#{goodsDealCount},</if>
+            <if test="damageLevel!=null">damage_level=#{damageLevel},</if>
+            <if test="goodsDiscountPrice!=null and goodsDiscountPrice!='' or goodsDiscountPrice==0">
+                goods_discount_price=#{goodsDiscountPrice},
             </if>
             <if test="goodsType!=null and goodsType!=''">goods_type=#{goodsType},</if>
+            <if test="discount!=null">discount=#{discount},</if>
         </set>
-        where shop_uuid=#{shopUUID};
+        where goods_uuid=#{goodsUUID};
     </update>
 
 
-    <select id="queryGoodsListByCondition" resultType="com.srx.transaction.Entities.Goods"
-            parameterType="com.srx.transaction.Entities.Goods">
+    <select id="queryGoodsListByCondition" resultMap="goods">
         select * from goods
         <where>
-            <if test="goodsUUID!=null and goodsUUID!=''">
-                and goods_uuid=#{goodsUUID}
+            <if test="goods.goodsUUID!=null and goods.goodsUUID!=''">
+                and goods_uuid=#{goods.goodsUUID}
             </if>
-            <if test="shopUUID!=null and shopUUID!=''">
-                and shop_uuid=#{shopUUID}
+            <if test="goods.shopUUID!=null and goods.shopUUID!=''">
+                and shop_uuid=#{goods.shopUUID}
             </if>
-            <if test="goodsName!=null and goodsName!=''">
-                and goods_name=#{goodsName}
+            <if test="goods.goodsName!=null and goods.goodsName!=''">
+                and goods_name=#{goods.goodsName}
             </if>
-            <if test="goodsType!=null and goodsType!=''">
-                and goods_type=#{goodsType}
+            <if test="goods.goodsType!=null and goods.goodsType!=''">
+                and goods_type=#{goods.goodsType}
             </if>
-            <if test="isBargain!=null and isBargain!=''">
-                and is_bargain=#{isBargain}
+            <if test="goods.isBargain!=null and goods.isBargain!=''">
+                and is_bargain=#{goods.isBargain}
             </if>
-            <if test="goodsPrice!=null and goodsPrice!=''">
-                and goods_price=#{goodsPrice} or goods_discount_price=#{goodsDiscountPrice}
+            <if test="goods.goodsPrice!=null and goods.goodsPrice!='' or goods.goodsPrice==0">
+                and goods_price=#{goods.goodsPrice} or goods_discount_price=#{goods.goodsPrice}
             </if>
-            <if test="goodsPraiseRate!=null and goodsPraiseRate!=''">
-                and goods_praise_rate=#{goodsPraiseRate}
+            <if test="goods.goodsPraiseRate!=null and goods.goodsPraiseRate!='' or goods.goodsPraiseRate==0">
+                and goods_praise_rate=#{goods.goodsPraiseRate}
             </if>
-            <if test="damageLevel!=null and damageLevel!=''">
-                and damage_level=#{damageLevel}
+            <if test="goods.damageLevel!=null and goods.damageLevel!=''">
+                and damage_level=#{goods.damageLevel}
             </if>
         </where>
-        order by goodsPraiseRate
+        order by goods_praise_rate
         desc limit #{begin},#{pageSize};
     </select>
 
@@ -103,14 +130,13 @@
         insert into goods_picture (goods_uuid,picture_path) values (#{goodsUUID},#{picturePath});
     </insert>
 
-    <select id="queryGoodsPictureListByUUID" resultType="com.srx.transaction.Entities.GoodsPicture">
-        select * from shop_picture where shop_uuid=#{shopUUID} order by join_time desc limit 0,#{pageSize};
+    <select id="queryGoodsPictureListByUUID" resultMap="goodsPicture">
+        select * from goods_picture where goods_uuid=#{goodsUUID} order by join_time desc limit 0,#{pageSize};
     </select>
 
-    <select id="queryGoodsByUUID" resultType="com.srx.transaction.Entities.Goods">
+    <select id="queryGoodsByUUID" resultMap="goods">
         select * from goods where goods_uuid=#{goodsUUID};
     </select>
-
 
 
 </mapper>

@@ -3,7 +3,7 @@ package com.srx.transaction.Enum;
 public enum GoodsType {
     BOOK("书籍",1),
     STATIONERY("文具",2),
-    Digital("数码",3),
+    DIGITAL("数码",3),
     CODE("代码代写",4)
     ;
 

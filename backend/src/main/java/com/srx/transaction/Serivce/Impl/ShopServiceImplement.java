@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShopServiceImplement implements ShopService, BaseService {
+public class ShopServiceImplement implements ShopService{
 
     @Autowired
     private ShopMapper shopMapper;
@@ -41,9 +41,15 @@ public class ShopServiceImplement implements ShopService, BaseService {
         Integer nowLevel = shop.getLevel();
         Integer newLevel;
         if (upper) {
-            newLevel = nowLevel++;
+            newLevel = nowLevel + 1;
+            if (newLevel > 5) {
+                return false;
+            }
         } else {
-            newLevel = nowLevel--;
+            newLevel = nowLevel - 1;
+            if (newLevel < 1) {
+                return false;
+            }
         }
         Boolean aBoolean = shopMapper.updateShopLevel(shopUUID, newLevel);
         return aBoolean;
@@ -83,7 +89,12 @@ public class ShopServiceImplement implements ShopService, BaseService {
         Shop shop = shopMapper.queryShopByUUID(shopUUID);
         Integer nowDealCount = shop.getDealCount();
         Integer nowPraiseCount = shop.getPraiseCount();
-        double rate = nowPraiseCount / nowDealCount * 100;
+        double rate;
+        if (nowDealCount == 0) {
+            rate = 0.0;
+        } else {
+            rate = Double.valueOf(nowPraiseCount * 100 / nowDealCount);
+        }
         Boolean aBoolean = shopMapper.updateShopPraiseRate(shopUUID, rate);
         return aBoolean;
     }

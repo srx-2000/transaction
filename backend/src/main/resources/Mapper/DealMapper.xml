@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srx.transaction.Mapper.DealMapper">
+    <resultMap id="deal" type="com.srx.transaction.Entities.Deal">
+        <id property="dealUUID" column="deal_uuid"/>
+        <result property="goodsUUID" column="goods_uuid"/>
+        <result property="shopUUID" column="shop_uuid"/>
+        <result property="commonId" column="common_id"/>
+        <result property="dealTime" column="deal_time"/>
+        <result property="dealCount" column="deal_count"/>
+        <result property="assess" column="assess"/>
+        <result property="status" column="status"/>
+    </resultMap>
+    <insert id="insertDeal">
+        insert into deal (deal_uuid,goods_uuid,shop_uuid,common_id,deal_count) values (#{dealUUID},#{goodsUUID},#{shopUUID},#{commonId},#{dealCount});
+    </insert>
+
+    <select id="queryDealListByCondition" resultMap="deal">
+        select * from deal
+        <where>
+            <if test="deal.dealUUID!=null and deal.dealUUID!=''">
+                and deal_uuid=#{deal.dealUUID}
+            </if>
+            <if test="deal.goodsUUID!=null and deal.goodsUUID!=''">
+                and goods_uuid=#{deal.goodsUUID}
+            </if>
+            <if test="deal.shopUUID!=null and deal.shopUUID!=''">
+                and shop_uuid=#{deal.shopUUID}
+            </if>
+            <if test="deal.commonId!=null and deal.commonId!=''">
+                and common_id=#{deal.commonId}
+            </if>
+            <if test="deal.dealTime!=null and deal.dealTime!=''">
+                and deal_time&lt;=#{deal.dealTime}
+            </if>
+            <if test="deal.status!=null and deal.status!=''">
+                and status=#{deal.status}
+            </if>
+        </where>
+        limit #{begin},#{pageSize}
+        ;
+    </select>
+
+    <update id="updateAssess">
+        update deal set assess = #{assess} where deal_uuid=#{dealUUID};
+    </update>
+
+    <update id="updateDealTime">
+        update deal set deal_time = current_timestamp where deal_uuid=#{dealUUID};
+    </update>
+
+    <update id="updateStatus">
+        update deal set status = #{status} where deal_uuid=#{dealUUID};
+    </update>
+
+    <select id="queryDealByUUID" resultMap="deal">
+        select * from deal where deal_uuid=#{dealUUID};
+    </select>
+
+    <select id="queryDealListByGoodsUUID" resultMap="deal">
+        select * from deal where goods_uuid=#{goodsUUID};
+    </select>
+
+</mapper>

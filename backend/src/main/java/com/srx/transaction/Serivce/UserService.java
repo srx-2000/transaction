@@ -114,6 +114,8 @@ public interface UserService extends BaseService{
      */
     Boolean updateUserCity(String username, String city);
 
+    String getUserIdByUsername(String username);
+
 //    /**
 //     * 将用户状态更新为异常
 //     * @param username

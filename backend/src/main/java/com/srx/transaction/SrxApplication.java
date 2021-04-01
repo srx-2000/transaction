@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @MapperScan("com.srx.transaction.Mapper")
-//@EnableScheduling
+@EnableScheduling
 public class SrxApplication {
     public static void main(String[] args) {
         SpringApplication.run(SrxApplication.class, args);

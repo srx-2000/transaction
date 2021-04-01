@@ -95,6 +95,6 @@
     </update>
 
     <update id="updateUserCity">
-        update user set city =#{city} where username=#{username};
+        update common_user set city =#{city} where user_id=#{userId};
     </update>
 </mapper>

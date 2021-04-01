@@ -10,11 +10,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class Deal {
-//    goods_uuid  shop_uuid  common_id  deal_time  deal_count  status
+//  deal_uuid  goods_uuid  shop_uuid  common_id  deal_time  deal_count assess status
+    private String dealUUID;
     private String goodsUUID;
     private String shopUUID;
     private String commonId;
     private String dealTime;
     private String dealCount;
+    private String assess;
     private String status;
 }

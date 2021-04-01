@@ -69,18 +69,19 @@ CREATE TABLE goods(
 	is_bargain TINYINT NOT NULL DEFAULT 0 COMMENT "是否可以讨价还价，默认不可以",
 	damage_level INT NOT NULL DEFAULT 10 COMMENT "损坏程度，10为全新，0为完全损坏",
 	discount INT NOT NULL DEFAULT 100 COMMENT "折扣，默认100，即不打折",
-	`status` TINYINT NOT NULL DEFAULT 1 COMMENT "0已下架（手动操作），1在售卖（默认），-1已售罄（goods_count==0时）"
+	`status` TINYINT NOT NULL DEFAULT 0 COMMENT "0已下架（商家手动下架或插入时默认），1在售卖（商家上线商品后需要经过管理员审核后才状态可变为1），-1已售罄（goods_count==0时）"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 
 CREATE TABLE deal(
+	deal_uuid VARCHAR(36) NOT NULL COMMENT "订单号，订单额唯一标识符",
 	goods_uuid VARCHAR(36) NOT NULL COMMENT "商品唯一标识符",
 	shop_uuid VARCHAR(36) NOT NULL COMMENT "店铺唯一标识符",
 	common_id INT NOT NULL COMMENT "买家id",
 	deal_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "交易时间，从用户点击收货开始",
 	deal_count INT NOT NULL DEFAULT 1 COMMENT "一种物品的交易数量",
 	assess TINYINT NOT NULL DEFAULT 5 COMMENT "对商品的评价，默认为5星好评",
-	`status` TINYINT NOT NULL DEFAULT 0 COMMENT "0表示订单正在交易（已完成，24小时内没有用退货及变为-1），1订单已退货（买家确认退货成功后订单变为-1），-1订单已彻底完成（无法退货或已退货完成）"
+	`status` TINYINT NOT NULL DEFAULT 0 COMMENT "0表示订单正在交易（默认），1订单已退货（买家确认退货成功后订单变为-1），-1订单已彻底完成（无法退货或已退货完成），2订单已被签收（从此时开始24小时内没有退货变为-1）"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='交易处理表';
 
 CREATE TABLE wallet(
@@ -114,6 +115,14 @@ CREATE TABLE goods_picture(
 	join_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "图片加入时间"
 )ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
+CREATE TABLE middle_wallet(
+	deal_uuid VARCHAR(36) NOT NULL COMMENT "订单号",
+	sum_money DOUBLE(10,2) NOT NULL COMMENT "此订单的总价钱",
+	STATUS TINYINT NOT NULL DEFAULT 0 COMMENT "默认为0，0表示正在处理中，1表示商家已收款，-1表示商家已退货，货款已还给买家"
+)ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT "转账中间表，用来确保退货不会出现差值";
 
-INSERT INTO USER(username,PASSWORD,email,role,STATUS) VALUES("admin","admin","admin1@qq.com",2,0);
+
+INSERT INTO USER(username,PASSWORD,email,role,STATUS) VALUES("admin","admin","admin@qq.com",2,0);
+
+
 

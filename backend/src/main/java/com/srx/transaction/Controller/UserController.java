@@ -5,7 +5,10 @@ import com.srx.transaction.Entities.BusinessUser;
 import com.srx.transaction.Entities.CommonUser;
 import com.srx.transaction.Entities.DTO.ResultMessage;
 import com.srx.transaction.Entities.User;
+import com.srx.transaction.Entities.Wallet;
 import com.srx.transaction.Serivce.Impl.UserServiceImplement;
+import com.srx.transaction.Serivce.UserService;
+import com.srx.transaction.Serivce.WalletService;
 import com.srx.transaction.Util.CodeUtil;
 import com.srx.transaction.Util.PaginationUtil;
 import com.srx.transaction.Util.PictureUtil;
@@ -28,7 +31,9 @@ import static com.srx.transaction.Enum.ResultCode.*;
 public class UserController {
 
     @Autowired
-    private UserServiceImplement userService;
+    private UserService userService;
+    @Autowired
+    private WalletService walletService;
 
     @PostMapping("/login")
     public ResultMessage login(@RequestBody User user, HttpServletRequest session) {
@@ -117,22 +122,22 @@ public class UserController {
         User baseUser = gson.fromJson(user, User.class);
         BusinessUser businessUser = gson.fromJson(businessuser, BusinessUser.class);
         String shopUUID = CodeUtil.get_uuid();
-        String licenseUrl = "" ;
-        String identityFrontUrl = "" ;
-        String identityBackUrl = "" ;
+        String licenseUrl = "";
+        String identityFrontUrl = "";
+        String identityBackUrl = "";
         Boolean flag = PictureUtil.uploadPicture(license, shopUUID, null, PictureUtil.LICENSE);
         Boolean flag1 = PictureUtil.uploadPicture(identityFront, shopUUID, null, PictureUtil.IDENTITY_FRONT);
         Boolean flag2 = PictureUtil.uploadPicture(identityBack, shopUUID, null, PictureUtil.IDENTITY_BACK);
         if (flag) {
-            licenseUrl = PictureUtil.getUrl(shopUUID, null, PictureUtil.LICENSE);
+            licenseUrl = PictureUtil.getShopUrl(shopUUID, PictureUtil.LICENSE);
             businessUser.setLicense(licenseUrl);
         }
         if (flag1) {
-            identityFrontUrl = PictureUtil.getUrl(shopUUID, null, PictureUtil.IDENTITY_FRONT);
+            identityFrontUrl = PictureUtil.getShopUrl(shopUUID, PictureUtil.IDENTITY_FRONT);
             businessUser.setIdentificationFront(identityFrontUrl);
         }
         if (flag2) {
-            identityBackUrl = PictureUtil.getUrl(shopUUID, null, PictureUtil.IDENTITY_BACK);
+            identityBackUrl = PictureUtil.getShopUrl(shopUUID, PictureUtil.IDENTITY_BACK);
             businessUser.setIdentificationBack(identityBackUrl);
         }
         if (businessUser != null && baseUser != null) {
@@ -235,4 +240,23 @@ public class UserController {
         else
             return new ResultMessage(EMAIL_NOT_EXIT);
     }
+
+    @GetMapping("/addMoney")
+    public ResultMessage addMoney(@RequestParam String username, @RequestParam Double addMoney) {
+        String userId = userService.getUserIdByUsername(username);
+        Boolean aBoolean = walletService.addMoney(userId, addMoney);
+        if (aBoolean)
+            return new ResultMessage(ADD_MONEY_SUCCESS);
+        return new ResultMessage(ADD_MONEY_FAIL);
+    }
+    @GetMapping("/subMoney")
+    public ResultMessage subMoney(@RequestParam String username, @RequestParam Integer subMoney) {
+        String userId = userService.getUserIdByUsername(username);
+        Boolean aBoolean = walletService.subMoney(userId, subMoney);
+        if (aBoolean)
+            return new ResultMessage(SUB_MONEY_SUCCESS);
+        return new ResultMessage(SUB_MONEY_FAIL);
+    }
+
+
 }

@@ -65,22 +65,44 @@ public class ShopController {
     public ResultMessage updateShopStatus(@RequestParam String shopUUID, @RequestParam Boolean isOpen) {
         String status;
         if (isOpen) {
-            status = "1" ;
+            status = "1";
         } else {
-            status = "0" ;
+            status = "0";
+        }
+        Shop shopByUUID = shopService.getShopByUUID(shopUUID);
+        String nowStatus = shopByUUID.getStatus();
+        if (status.equals(nowStatus)){
+            return new ResultMessage(ERROR_UPDATE_SHOP_STATUS);
         }
         Boolean aBoolean = shopService.updateShopStatus(shopUUID, status);
         if (aBoolean)
-            return new ResultMessage(UPDATE_SHOP_STATUS_SUCCESS, true);
-        return new ResultMessage(UPDATE_SHOP_STATUS_FAIL, false);
+            return new ResultMessage(UPDATE_SHOP_STATUS_SUCCESS);
+        return new ResultMessage(UPDATE_SHOP_STATUS_FAIL);
     }
 
     @GetMapping("/updateShopName")
     public ResultMessage updateShopName(@RequestParam String shopUUID, @RequestParam String shopName) {
+        Shop shopByUUID = shopService.getShopByUUID(shopUUID);
+        String name = shopByUUID.getShopName();
+        if (shopName.equals(name)){
+            return new ResultMessage(ERROR_UPDATE_SHOP_NAME);
+        }
         Boolean aBoolean = shopService.updateShopName(shopUUID, shopName);
         if (aBoolean)
             return new ResultMessage(UPDATE_SHOP_NAME_SUCCESS, true);
         return new ResultMessage(UPDATE_SHOP_NAME_FAIL, false);
     }
 
+    @GetMapping("/updateShopPraiseRate")
+    public ResultMessage updateShopPraiseRate(@RequestParam String shopUUID) {
+        Shop shopByUUID = shopService.getShopByUUID(shopUUID);
+        if (shopByUUID != null) {
+            Boolean aBoolean = shopService.updateShopPraiseRate(shopUUID);
+            if (aBoolean)
+                return new ResultMessage(UPDATE_SHOP_INFO_SUCCESS);
+            else
+                return new ResultMessage(UPDATE_SHOP_INFO_FAIL);
+        }
+        return new ResultMessage(ERROR_NOFOUND_SHOP);
+    }
 }
