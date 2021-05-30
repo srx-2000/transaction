@@ -67,5 +67,5 @@
   
 * 2021.5.30
 
-  更新前端仓库地址，前端代码不在本仓库存储，详细代码请见**[仓库](https://github.com/huoyanlieniao/vue-shop)**
+  更新前端仓库地址，前端代码不在本仓库存储，详细代码请见[仓库](https://github.com/huoyanlieniao/vue-shop)
 
