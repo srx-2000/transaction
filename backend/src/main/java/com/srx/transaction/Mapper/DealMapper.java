@@ -66,4 +66,17 @@ public interface DealMapper {
      * @return
      */
     List<Deal> queryDealListByGoodsUUID(@Param("goodsUUID") String goodsUUID);
+
+    /**
+     * 查询所有deal数量
+     * @return
+     */
+    Integer queryALLDealCount();
+
+    /**
+     * 根据deal信息查询相关deal数量
+     * @param deal
+     * @return
+     */
+    Integer queryDealCount(@Param("deal") Deal deal);
 }

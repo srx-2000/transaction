@@ -60,5 +60,18 @@ public interface GoodsMapper {
      */
     Goods queryGoodsByUUID(@Param("goodsUUID") String goodsUUID);
 
+    /**
+     * 通过传入的goods查询相应的商品的数量
+     * @param goods
+     * @return
+     */
+    Integer queryGoodsCount(@Param("goods") Goods goods);
+
+    /**
+     * 查询所有商品数量
+     * @return
+     */
+    Integer queryGoodsAllCount();
+
 }
 

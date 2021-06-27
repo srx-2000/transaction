@@ -197,4 +197,11 @@ public class GoodsController {
         } else return new ResultMessage(ERROR_NO_DATA);
     }
 
+    @GetMapping("/getGoodsCount")
+    public ResultMessage getGoodsCount(Goods goods){
+        Map<String,Integer> countMap=new HashMap<>();
+        Integer integer = goodsService.queryGoodsCount(goods);
+        countMap.put("GoodsCount",integer);
+        return new ResultMessage(DATA_RETURN_SUCCESS,countMap);
+    }
 }

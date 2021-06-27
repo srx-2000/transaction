@@ -87,4 +87,11 @@ public class DealServiceImplement implements DealService {
     public List<Deal> getDealListByGoodsUUID(String goodsUUID) {
         return dealMapper.queryDealListByGoodsUUID(goodsUUID);
     }
+
+    @Override
+    public Integer queryDealCount(Deal deal) {
+        if (deal==null)
+            return dealMapper.queryALLDealCount();
+        return dealMapper.queryDealCount(deal);
+    }
 }

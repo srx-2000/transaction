@@ -63,4 +63,35 @@
         select * from deal where goods_uuid=#{goodsUUID};
     </select>
 
+    <select id="queryALLDealCount" resultType="Integer">
+        select count(*) from deal
+    </select>
+
+    <select id="queryDealCount" resultType="Integer">
+        select count(*) from deal
+        <where>
+            <if test="deal.dealUUID!=null and deal.dealUUID!=''">
+                and deal_uuid=#{deal.dealUUID}
+            </if>
+            <if test="deal.goodsUUID!=null and deal.goodsUUID!=''">
+                and goods_uuid=#{deal.goodsUUID}
+            </if>
+            <if test="deal.shopUUID!=null and deal.shopUUID!=''">
+                and shop_uuid=#{deal.shopUUID}
+            </if>
+            <if test="deal.commonId!=null and deal.commonId!=''">
+                and common_id=#{deal.commonId}
+            </if>
+            <if test="deal.dealTime!=null and deal.dealTime!=''">
+                and deal_time&lt;=#{deal.dealTime}
+            </if>
+            <if test="deal.assess!=null and deal.assess!=''">
+                and assess=#{deal.assess}
+            </if>
+            <if test="deal.status!=null and deal.status!=''">
+                and status=#{deal.status}
+            </if>
+        </where>
+    </select>
+
 </mapper>

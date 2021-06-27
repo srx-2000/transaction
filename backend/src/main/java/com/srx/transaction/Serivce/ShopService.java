@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface ShopService extends BaseService{
+public interface ShopService extends BaseService {
     /**
      * 插入一个商店，该方法应该在商家用户被管理员审批同意成为一个正常用户时调用
      *
@@ -52,14 +52,14 @@ public interface ShopService extends BaseService{
      * @param upper
      * @return
      */
-    Boolean updateShopLevel(String shopUUID,Boolean upper);
+    Boolean updateShopLevel(String shopUUID, Boolean upper);
 
     /**
      * 获取所有商铺信息
      *
      * @return
      */
-    List<Shop> getShopList(Integer currentPage,Integer pageSize);
+    List<Shop> getShopList(Integer currentPage, Integer pageSize);
 
     /**
      * 通过商铺的UUID查询商铺信息
@@ -101,6 +101,16 @@ public interface ShopService extends BaseService{
      * @param pageSize
      * @return
      */
-    List<Shop> getShopListByCondition(Shop shop, Integer currentPage,Integer pageSize);
+    List<Shop> getShopListByCondition(Shop shop, Integer currentPage, Integer pageSize);
+
+
+    /**
+     * 根据传入的shop信息查询符合条件的shop的个数
+     *
+     * @param shop
+     * @return
+     */
+    Integer getShopCount(Shop shop);
+
 
 }

@@ -104,4 +104,12 @@ public class ShopServiceImplement implements ShopService{
         int begin = (currentPage - 1) * pageSize;
         return shopMapper.queryShopListByCondition(shop, begin, pageSize);
     }
+
+    @Override
+    public Integer getShopCount(Shop shop) {
+        if (shop==null){
+            return shopMapper.queryShopAllCount();
+        }
+        return shopMapper.queryShopCount(shop);
+    }
 }

@@ -26,4 +26,19 @@
     <select id="queryCommentListByUUID" resultMap="comment">
         select * from comment where goods_uuid=#{goodsUUID};
     </select>
+
+    <select id="queryCommentCount" resultType="Integer">
+        select count(*) from comment
+        <where>
+            <if test="comment.goodsUUID!=null and comment.goodsUUID!=''">
+                and goods_uuid=#{comment.goodsUUID}
+            </if>
+            <if test="comment.userId!=null and comment.userId!=''">
+                and user_id=#{comment.userId}
+            </if>
+            <if test="comment.replyId!=null and comment.replyId!=''">
+                and reply_id=#{comment.replyId}
+            </if>
+        </where>
+    </select>
 </mapper>

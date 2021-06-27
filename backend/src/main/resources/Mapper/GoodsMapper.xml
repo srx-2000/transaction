@@ -104,7 +104,7 @@
                 and shop_uuid=#{goods.shopUUID}
             </if>
             <if test="goods.goodsName!=null and goods.goodsName!=''">
-                and goods_name=#{goods.goodsName}
+                and goods_name like '%${goods.goodsName}%'
             </if>
             <if test="goods.goodsType!=null and goods.goodsType!=''">
                 and goods_type=#{goods.goodsType}
@@ -138,5 +138,37 @@
         select * from goods where goods_uuid=#{goodsUUID};
     </select>
 
+    <select id="queryGoodsCount" resultType="Integer">
+        select count(*) from goods
+        <where>
+            <if test="goods.goodsUUID!=null and goods.goodsUUID!=''">
+                and goods_uuid=#{goods.goodsUUID}
+            </if>
+            <if test="goods.shopUUID!=null and goods.shopUUID!=''">
+                and shop_uuid=#{goods.shopUUID}
+            </if>
+            <if test="goods.goodsName!=null and goods.goodsName!=''">
+                and goods_name like '%${goods.goodsName}%'
+            </if>
+            <if test="goods.goodsType!=null and goods.goodsType!=''">
+                and goods_type=#{goods.goodsType}
+            </if>
+            <if test="goods.isBargain!=null and goods.isBargain!=''">
+                and is_bargain=#{goods.isBargain}
+            </if>
+            <if test="goods.goodsPrice!=null and goods.goodsPrice!='' or goods.goodsPrice==0">
+                and goods_price=#{goods.goodsPrice} or goods_discount_price=#{goods.goodsPrice}
+            </if>
+            <if test="goods.goodsPraiseRate!=null and goods.goodsPraiseRate!='' or goods.goodsPraiseRate==0">
+                and goods_praise_rate=#{goods.goodsPraiseRate}
+            </if>
+            <if test="goods.damageLevel!=null and goods.damageLevel!=''">
+                and damage_level=#{goods.damageLevel}
+            </if>
+        </where>
+    </select>
 
+    <select id="queryGoodsAllCount" resultType="Integer">
+        select count(*) from goods
+    </select>
 </mapper>

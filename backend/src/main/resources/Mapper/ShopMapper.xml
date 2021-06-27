@@ -106,6 +106,47 @@
         limit #{begin},#{pageSize}
     </select>
 
+    <select id="queryShopCount" resultType="Integer">
+        select count(*) from shop
+        <where>
+            <if test="shop.shopId!=null">
+                and shop_id=#{shop.shopId}
+            </if>
+            <if test="shop.shopUUID!=null">
+                and shop_uuid=#{shop.shopUUID}
+            </if>
+            <if test="shop.businessId!=null">
+                and business_id=#{shop.businessId}
+            </if>
+            <if test="shop.createTime!=null">
+                and create_time &lt;=#{shop.createTime}
+            </if>
+            <if test="shop.status!=null">
+                and status=#{shop.status}
+            </if>
+            <if test="shop.shopName!=null">
+                and shop_name like '%${shop.shopName}%'
+            </if>
+            <if test="shop.level!=null">
+                and level=#{shop.level}
+            </if>
+            <if test="shop.praiseRate!=null">
+                and praise_rate=#{shop.praiseRate}
+            </if>
+            <if test="shop.praiseCount!=null">
+                and praise_count=#{shop.praiseCount}
+            </if>
+            <if test="shop.dealCount!=null">
+                and deal_count=#{shop.dealCount}
+            </if>
+            <if test="shop.status">
+                and status=#{shop.status}
+            </if>
+        </where>
+    </select>
 
+    <select id="queryShopAllCount" resultType="Integer">
+        select count(*) from shop;
+    </select>
 
 </mapper>

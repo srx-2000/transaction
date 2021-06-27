@@ -104,4 +104,18 @@ public interface ShopMapper {
      */
     List<Shop> queryShopListByCondition(Shop shop, @Param("begin") Integer begin, @Param("pageSize") Integer pageSize);
 
+    /**
+     * 根据传入的shop信息查询符合条件的shop的个数
+     *
+     * @param shop
+     * @return
+     */
+    Integer queryShopCount(@Param("shop") Shop shop);
+
+    /**
+     * 无差别返回所有商店的数量
+     *
+     * @return
+     */
+    Integer queryShopAllCount();
 }

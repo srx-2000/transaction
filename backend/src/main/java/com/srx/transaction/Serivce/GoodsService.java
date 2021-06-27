@@ -4,6 +4,7 @@ import com.srx.transaction.Entities.Goods;
 import com.srx.transaction.Entities.GoodsPicture;
 import com.srx.transaction.Entities.MiddleWallet;
 import com.srx.transaction.Entities.Shop;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -147,7 +148,12 @@ public interface GoodsService extends BaseService {
 //     */
 //    Boolean updateGoodsIsBargain(String goodsUUID,String isBargain);
 
-
+    /**
+     * 通过传入的goods查询相应的商品的数量
+     * @param goods
+     * @return
+     */
+    Integer queryGoodsCount(Goods goods);
 
 
 }

@@ -63,10 +63,10 @@ public interface UserMapper {
     /**
      * 查询用户权限
      *
-     * @param user
+     * @param userId
      * @return
      */
-    String queryUserRole(User user);
+    String queryUserRole(@Param("userId") String userId);
 
     /**
      * 根据userId查询普通用户的所有信息
@@ -123,10 +123,33 @@ public interface UserMapper {
 
     /**
      * 允许用户修改城市信息，即收货地址
+     *
      * @param city
      * @param userId
      * @return
      */
-    Boolean updateUserCity(@Param("userId")String userId,@Param("city") String city);
+    Boolean updateUserCity(@Param("userId") String userId, @Param("city") String city);
+
+    /**
+     * 查询所有用户的数量
+     *
+     * @return
+     */
+    Integer queryUserCount();
+
+    /**
+     * 查询普通用户的数量
+     *
+     * @return
+     */
+    Integer queryCommonUserCount();
+
+    /**
+     * 查询商家用户的数量
+     *
+     * @return
+     */
+    Integer queryBusinessUserCount();
+
 
 }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.srx.transaction.Enum.ResultCode.*;
 
@@ -44,7 +46,7 @@ public class DealController {
         Goods goodsByUUID = goodsService.getGoodsByUUID(goodsUUID);
         if (goodsByUUID == null)
             return new ResultMessage(ERROR_NOFOUND_GOODS);
-        double money = goodsByUUID.getGoodsPrice() * dealCount;
+        double money = goodsByUUID.getGoodsDiscountPrice() * dealCount;
         MiddleWallet middleWallet = new MiddleWallet();
         middleWallet.setDealUUID(dealUUID);
         middleWallet.setSumMoney(money);
@@ -229,5 +231,11 @@ public class DealController {
         return new ResultMessage(COMPLETE_DEAL_FAIL);
     }
 
-
+    @GetMapping("/getDealCount")
+    public ResultMessage getDealCount(Deal deal) {
+        Integer dealCount = dealService.queryDealCount(deal);
+        Map<String, Integer> countMap = new HashMap<>();
+        countMap.put("dealCount", dealCount);
+        return new ResultMessage(DATA_RETURN_SUCCESS, countMap);
+    }
 }

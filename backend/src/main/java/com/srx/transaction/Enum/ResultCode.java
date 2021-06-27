@@ -81,6 +81,7 @@ public enum ResultCode {
     ADD_MONEY_FAIL("账户金额添加失败", 475),
     SUB_MONEY_FAIL("账户金额扣除失败", 476),
     INSERT_COMMENT_FAIL("评论失败", 477),
+    WALLET_NO_FOUND("没找到该用户的钱包呦", 478),
 
 
     ;

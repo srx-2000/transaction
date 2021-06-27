@@ -31,7 +31,7 @@
 
     <select id="login" resultMap="user">
         select * from user
-        where status="0" and username=#{username} or email=#{username} and password=#{password}
+        where status="0" and password=#{password} and username=#{username} or email=#{username}
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId"
@@ -55,7 +55,7 @@
     </select>
 
     <select id="queryUserRole" resultType="String">
-        select role from USER where username=#{username};
+        select role from USER where user_id=#{userId};
     </select>
 
     <select id="queryCommonUserById" resultMap="commonUser">
@@ -97,4 +97,19 @@
     <update id="updateUserCity">
         update common_user set city =#{city} where user_id=#{userId};
     </update>
+
+    <select id="queryUserCount" resultType="Integer">
+        select count(*) from user
+    </select>
+
+    <select id="queryCommonUserCount" resultType="Integer">
+        select count(*) from common_user
+    </select>
+
+    <select id="queryBusinessUserCount" resultType="Integer">
+        select count(*) from business_user
+    </select>
+
+
+
 </mapper>

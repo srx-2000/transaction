@@ -25,7 +25,7 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public User login(String username, String password) {
-        if (username != null && password != null)
+        if (username != null && password != null && password.trim() != "")
             return userMapper.login(username, CodeUtil.get_MD5_code(password));
         return null;
     }
@@ -93,13 +93,10 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public String getAuthority(User user) {
-        if (user != null) {
-            String username = user.getUsername();
-            if (username != null) {
-                String s = userMapper.queryUserRole(user);
-                return s;
-            }
+    public String getAuthority(String userId) {
+        if (userId != null) {
+            String s = userMapper.queryUserRole(userId);
+            return s;
         }
         return null;
     }
@@ -157,9 +154,8 @@ public class UserServiceImplement implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Boolean updateUserStatus(String username, String status) {
-        User user = new User();
-        user.setUsername(username);
-        String s = userMapper.queryUserRole(user);
+        String userId = userMapper.queryUserIdByUsername(username);
+        String s = userMapper.queryUserRole(userId);
         Boolean flag = userMapper.updateUserStatus(username, status);
         String id = userMapper.queryUserIdByUsername(username);
         if (s.equals("1") && flag && status.equals("0")) {
@@ -185,6 +181,21 @@ public class UserServiceImplement implements UserService {
     public String getUserIdByUsername(String username) {
         String id = userMapper.queryUserIdByUsername(username);
         return id;
+    }
+
+    @Override
+    public Integer queryUserCount() {
+        return userMapper.queryUserCount();
+    }
+
+    @Override
+    public Integer queryCommonUserCount() {
+        return userMapper.queryCommonUserCount();
+    }
+
+    @Override
+    public Integer queryBusinessUserCount() {
+        return userMapper.queryBusinessUserCount();
     }
 
 }

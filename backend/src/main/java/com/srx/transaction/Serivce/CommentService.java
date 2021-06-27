@@ -20,5 +20,12 @@ public interface CommentService extends BaseService {
      * @return
      */
     List<Comment> getCommentListByUUID(String goodsUUID);
+    /**
+     * 根据给出的条件查询comment数量
+     * 这里规定搜索条件仅支持：goods_uuid、user_id、reply_id
+     * @param comment
+     * @return
+     */
+    Integer queryCommentCount(Comment comment);
 
 }

@@ -5,6 +5,7 @@ import com.srx.transaction.Mapper.*;
 import com.srx.transaction.Serivce.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,5 +58,12 @@ public class CommentServiceImplement implements CommentService {
     public List<Comment> getCommentListByUUID(String goodsUUID) {
         List<Comment> comments = commentMapper.queryCommentListByUUID(goodsUUID);
         return comments;
+    }
+
+    @Override
+    public Integer queryCommentCount(Comment comment) {
+        if (comment.getGoodsUUID() == null)
+            return null;
+        return commentMapper.queryCommentCount(comment);
     }
 }

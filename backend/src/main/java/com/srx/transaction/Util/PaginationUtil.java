@@ -20,10 +20,10 @@ public class PaginationUtil {
 
     public static ResultMessage getPaginationResult(Integer currentPage, Integer pageSize, BaseService service, String methodName, Object... args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (currentPage > 0) {
-            Map<String, Object[]> map = getParam(currentPage, pageSize, args);
-            Class[] classes= (Class[]) map.get("classes");
-            Object[] params= map.get("params");
-            Object[] preParams= map.get("preParams");
+            Map<String, Object[]> map = getParam(currentPage, pageSize,service,methodName, args);
+            Class[] classes = (Class[]) map.get("classes");
+            Object[] params = map.get("params");
+            Object[] preParams = map.get("preParams");
             Class<? extends BaseService> serviceClass = service.getClass();
             Method method = serviceClass.getMethod(methodName, classes);
             Class<?> returnType = method.getReturnType();
@@ -50,14 +50,18 @@ public class PaginationUtil {
         }
     }
 
-    private static Map<String, Object[]> getParam(Integer currentPage, Integer pageSize, Object... args) {
+    private static Map<String, Object[]> getParam(Integer currentPage, Integer pageSize,BaseService service,String methodName, Object... args) {
         Class[] classes = new Class[args.length + 2];
-        for (int i = 0; i < args.length; i++) {
-            Class<?> clazz = args[i].getClass();
-            classes[i] = clazz;
+        Class<? extends BaseService> serviceClass = service.getClass();
+        Method[] methods = serviceClass.getMethods();
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i].getName()==methodName) {
+                Class<?>[] parameterTypes = methods[i].getParameterTypes();
+                for (int j = 0; j < parameterTypes.length; j++) {
+                    classes[j]=parameterTypes[j];
+                }
+            }
         }
-        classes[args.length] = Integer.class;
-        classes[args.length + 1] = Integer.class;
         Object[] params = new Object[args.length + 2];
         for (int i = 0; i < args.length; i++) {
             params[i] = args[i];
@@ -68,7 +72,7 @@ public class PaginationUtil {
         for (int i = 0; i < args.length; i++) {
             preParams[i] = args[i];
         }
-        preParams[args.length] = currentPage-1;
+        preParams[args.length] = currentPage - 1;
         preParams[args.length + 1] = pageSize;
         Map<String, Object[]> map = new HashMap<>();
         map.put("classes", classes);

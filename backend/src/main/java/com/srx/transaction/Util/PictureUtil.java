@@ -34,7 +34,7 @@ public class PictureUtil {
 
     public final static int LICENSE = 1;
     public final static int IDENTITY_FRONT = 2;
-    public final static int IDENTITY_BACK = 3;
+        public final static int IDENTITY_BACK = 3;
 
 
     private static COSClient initClient() {

@@ -23,10 +23,12 @@ public interface CommentMapper {
      */
     List<Comment> queryCommentListByUUID(@Param("goodsUUID")String goodsUUID);
 
-
-
-
-
-
+    /**
+     * 根据给出的条件查询comment数量
+     * 这里规定搜索条件仅支持：goods_uuid、user_id、reply_id
+     * @param comment
+     * @return
+     */
+    Integer queryCommentCount(@Param("comment") Comment comment);
 
 }

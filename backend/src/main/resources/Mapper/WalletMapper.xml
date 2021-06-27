@@ -44,7 +44,7 @@
     </insert>
 
     <update id="updateMiddleWalletStatus">
-        update middle_wallet set sum_money=#{sumMoney} where deal_uuid=#{dealUUID};
+        update middle_wallet set status=#{status} where deal_uuid=#{dealUUID};
     </update>
 
 </mapper>

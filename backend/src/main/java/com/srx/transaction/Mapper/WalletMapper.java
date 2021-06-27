@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WalletMapper {
+public interface    WalletMapper {
     /**
      * 插入一个钱包
      *

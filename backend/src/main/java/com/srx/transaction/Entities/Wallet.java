@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class Wallet {
 //    user_id  integral  sum_money  current_money
     private String userId;
-    private Integer  integral;
-    private Integer sumMoney;
-    private Integer currentMoney;
+    private Integer integral;
+    private double sumMoney;
+    private double currentMoney;
 
 }

@@ -222,4 +222,11 @@ public class GoodsServiceImplement implements GoodsService {
         Boolean aBoolean = walletMapper.insertMiddleWallet(middleWallet);
         return aBoolean;
     }
+
+    @Override
+    public Integer queryGoodsCount(Goods goods) {
+        if (goods==null)
+            return goodsMapper.queryGoodsAllCount();
+        return goodsMapper.queryGoodsCount(goods);
+    }
 }

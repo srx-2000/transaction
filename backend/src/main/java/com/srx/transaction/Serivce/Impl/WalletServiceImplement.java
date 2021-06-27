@@ -34,8 +34,8 @@ public class WalletServiceImplement implements WalletService {
             return false;
         }
         Wallet wallet = walletMapper.queryWallet(userId);
-        Integer currentMoney = wallet.getCurrentMoney();
-        Integer sumMoney = wallet.getSumMoney();
+        Double currentMoney = wallet.getCurrentMoney();
+        Double sumMoney = wallet.getSumMoney();
         double newSumMoney = sumMoney + addMoney;
         double newCurrentMoney = currentMoney + addMoney;
         Boolean aBoolean = walletMapper.updateSumMoney(userId, newSumMoney);
@@ -52,25 +52,28 @@ public class WalletServiceImplement implements WalletService {
     @Override
     public Boolean subMoney(String userId, Integer subMoney) {
         Wallet wallet = walletMapper.queryWallet(userId);
-        Integer currentMoney = wallet.getCurrentMoney();
-        Integer sumMoney = wallet.getSumMoney();
+        Double currentMoney = wallet.getCurrentMoney();
+//        Double sumMoney = wallet.getSumMoney();
         Integer integral = wallet.getIntegral();
         double newCurrentMoney = currentMoney - subMoney;
-        double newSumMoney = sumMoney - subMoney;
+//        double newSumMoney = sumMoney - subMoney;
         int newIntegral = integral + subMoney;
-        Boolean aBoolean = walletMapper.updateSumMoney(userId, newSumMoney);
+        if (newCurrentMoney < 0) {
+            return false;
+        }
+//        Boolean aBoolean = walletMapper.updateSumMoney(userId, newSumMoney);
         Boolean aBoolean1 = walletMapper.updateCurrentMoney(userId, newCurrentMoney);
         Boolean aBoolean2 = walletMapper.updateIntegral(userId, newIntegral);
-        return aBoolean && aBoolean1 && aBoolean2;
+        return aBoolean1 && aBoolean2;
     }
 
     @Override
-    public MiddleWallet getMiddleWallet(String dealUUID,String status) {
-        return walletMapper.queryMiddleWalletByUUID(dealUUID,status);
+    public MiddleWallet getMiddleWallet(String dealUUID, String status) {
+        return walletMapper.queryMiddleWalletByUUID(dealUUID, status);
     }
 
     @Override
     public Boolean updateMiddleWalletStatus(String dealUUID, String status) {
-        return walletMapper.updateMiddleWalletStatus(dealUUID,status);
+        return walletMapper.updateMiddleWalletStatus(dealUUID, status);
     }
 }

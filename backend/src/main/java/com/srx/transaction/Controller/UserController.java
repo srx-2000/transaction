@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,15 +46,16 @@ public class UserController {
                 User login = userService.login(username, password);
                 if (login != null) {
                     session.getSession().setAttribute("user", login);
-                    if (role.equals("0")) {
+                    if (login.getRole().equals(role)&& login.getRole().equals("0")) {
                         CommonUser commonUserById = userService.getCommonUserById(login.getUserId());
                         return new ResultMessage(LOGIN_SUCCESS, commonUserById);
-                    } else if (role.equals("1")) {
+                    } else if (login.getRole().equals(role) && login.getRole().equals("1")) {
                         BusinessUser businessUser = userService.getBusinessUserById(login.getUserId());
                         return new ResultMessage(LOGIN_SUCCESS, businessUser);
-                    } else {
+                    } else if (login.getRole().equals(role) && login.getRole().equals("2")) {
                         return new ResultMessage(LOGIN_SUCCESS, login);
-                    }
+                    } else
+                        return new ResultMessage(ERROR_ROLE);
                 }
                 return new ResultMessage(ERROR_NOFOUND_USER);
             }
@@ -249,6 +251,7 @@ public class UserController {
             return new ResultMessage(ADD_MONEY_SUCCESS);
         return new ResultMessage(ADD_MONEY_FAIL);
     }
+
     @GetMapping("/subMoney")
     public ResultMessage subMoney(@RequestParam String username, @RequestParam Integer subMoney) {
         String userId = userService.getUserIdByUsername(username);
@@ -258,5 +261,44 @@ public class UserController {
         return new ResultMessage(SUB_MONEY_FAIL);
     }
 
+    @GetMapping("/getWalletById")
+    public ResultMessage getWalletById(@RequestParam String userId) {
+        String authority = userService.getAuthority(userId);
+        if (authority == null) {
+            return new ResultMessage(ERROR_NO_DATA);
+        } else if (authority.equals("2")) {
+            return new ResultMessage(WALLET_NO_FOUND);
+        }
+        Wallet wallet = walletService.getWallet(userId);
+        if (wallet != null)
+            return new ResultMessage(DATA_RETURN_SUCCESS, wallet);
+        else
+            return new ResultMessage(ERROR_NO_DATA);
+    }
+
+
+    @GetMapping("/getUserCount")
+    public ResultMessage getUserCount(){
+        Integer integer = userService.queryUserCount();
+        Map<String,Integer> countMap=new HashMap<>();
+        countMap.put("userCount",integer);
+        return new ResultMessage(DATA_RETURN_SUCCESS, countMap);
+    }
+
+    @GetMapping("/getCommonUserCount")
+    public ResultMessage getCommonUserCount(){
+        Integer integer = userService.queryCommonUserCount();
+        Map<String,Integer> countMap=new HashMap<>();
+        countMap.put("commonUserCount",integer);
+        return new ResultMessage(DATA_RETURN_SUCCESS, countMap);
+    }
+
+    @GetMapping("/getBusinessUserCount")
+    public ResultMessage getBusinessUserCount(){
+        Integer integer = userService.queryBusinessUserCount();
+        Map<String,Integer> countMap=new HashMap<>();
+        countMap.put("businessUserCount",integer);
+        return new ResultMessage(DATA_RETURN_SUCCESS, countMap);
+    }
 
 }

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.srx.transaction.Enum.ResultCode.*;
 
@@ -104,5 +106,14 @@ public class ShopController {
                 return new ResultMessage(UPDATE_SHOP_INFO_FAIL);
         }
         return new ResultMessage(ERROR_NOFOUND_SHOP);
+    }
+
+
+    @GetMapping("/getShopCount")
+    public ResultMessage getShopCount(Shop shop){
+        Integer shopCount = shopService.getShopCount(shop);
+        Map<String,Integer> countMap=new HashMap<>();
+        countMap.put("shopCount",shopCount);
+        return new ResultMessage(DATA_RETURN_SUCCESS,countMap);
     }
 }

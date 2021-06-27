@@ -58,10 +58,10 @@ public interface UserService extends BaseService{
 
     /**
      * 查询用户权限
-     * @param user
+     * @param UserId
      * @return
      */
-    String getAuthority(User user);
+    String getAuthority(String UserId);
 
     /**
      * 根据userId查询普通用户的所有信息
@@ -123,4 +123,24 @@ public interface UserService extends BaseService{
 //     */
 //    Boolean updateUserStatusToAbnormal(String username);
 
+    /**
+     * 查询所有用户的数量
+     *
+     * @return
+     */
+    Integer queryUserCount();
+
+    /**
+     * 查询普通用户的数量
+     *
+     * @return
+     */
+    Integer queryCommonUserCount();
+
+    /**
+     * 查询商家用户的数量
+     *
+     * @return
+     */
+    Integer queryBusinessUserCount();
 }
