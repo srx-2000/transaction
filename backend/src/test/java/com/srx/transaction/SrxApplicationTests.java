@@ -5,6 +5,7 @@ import com.srx.transaction.Entities.DTO.ResultMessage;
 import com.srx.transaction.Entities.User;
 import com.srx.transaction.Util.PictureUtil;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +18,6 @@ import static com.srx.transaction.Enum.ResultCode.ERROR_NO_DATA;
 
 @SpringBootTest
 class SrxApplicationTests {
-
     @Test
     void contextLoads() {
     }

@@ -36,6 +36,7 @@ public class UserController {
     @Autowired
     private WalletService walletService;
 
+
     @PostMapping("/login")
     public ResultMessage login(@RequestBody User user, HttpServletRequest session) {
         if (user != null) {
