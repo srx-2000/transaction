@@ -23,11 +23,11 @@ import java.util.List;
  */
 public class PictureUtil {
 
-    public static String secretId = "AKIDWo1H9UK0sVwPgUIi6E5fR0b0RYSxEose";
-    public static String secretKey = "e3XlVIp68uQP8bxTEj8G9nTvpysaaLs9";
+    public static String secretId = "your secretId";
+    public static String secretKey = "your secretKey";
 
     // 指定文件将要存放的存储桶
-    private static String bucketName = "transaction-1304038944";
+    private static String bucketName = "bucketName";
     private static String regionName = "ap-beijing";
     //存储根路径
     private static String rootPath = "root";
